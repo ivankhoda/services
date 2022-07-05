@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  client: MyText
+  services: MyText
+  assignee: MyText
+  price: 1
+  client: one
+  assignee: one
+
+two:
+  client: MyText
+  services: MyText
+  assignee: MyText
+  price: 1
+  client: two
+  assignee: two
