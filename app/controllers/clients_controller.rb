@@ -16,7 +16,7 @@ class ClientsController < ApplicationController
   end
 
   def create
-    @client = Client.new(params)
+    @client = Client.new(client_params)
     if @client.save
       render json: { message: 'Client succesfully created' }
     else
@@ -27,7 +27,7 @@ class ClientsController < ApplicationController
   def update
     client = Client.find_by(id: params[:id])
     if !client.nil?
-      client.update(params)
+      client.update(client_params)
       render json: { client: }
     else
       render json: { error: 'Client not found' }, status: 422
@@ -47,7 +47,7 @@ class ClientsController < ApplicationController
 
   private
 
-  def params
-    params.require(:client).permit(:name, :alias, :codetype_id)
+  def client_params
+    params.require(:client).permit(:name, :surname)
   end
 end
