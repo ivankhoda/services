@@ -2,52 +2,51 @@ class ServicesController < ApplicationController
   protect_from_forgery with: :null_session
 
   def new
-    @client = Client.new
+    @service = Service.new
   end
 
   def index
-    clients = Client.find_each
-    render json: { clients: }
+    services = Service.find_each
+    render json: { services: }
   end
 
   def show
-    client = Client.find_by(id: params[:id])
-    render json: { client: }
+    service = Service.find_by(id: params[:id])
+    render json: { service: }
   end
 
   def create
-    @client = Client.new(vendor_params)
-    if @client.save
-      render json: { message: 'Client succesfully created' }
+    @service = Service.new(params)
+    if @service.save
+      render json: { message: 'Service succesfully created' }
     else
-      render json: { error: @client.errors.messages }
+      render json: { error: @service.errors.messages }
     end
   end
 
   def update
-    client = Client.find_by(id: params[:id])
-    if !client.nil?
-      client.update(vendor_params)
-      render json: { client: }
+    service = Service.find_by(id: params[:id])
+    if !service.nil?
+      service.update(params)
+      render json: { service: }
     else
-      render json: { error: 'Client not found' }, status: 422
+      render json: { error: 'Service not found' }, status: 422
     end
   end
 
   def destroy
-    client = Client.find_by(id: params[:id])
-    if !client.nil?
-      client.task_ranges.destroy
-      client.destroy
-      render json: { message: 'Client was removed' }
+    service = Service.find_by(id: params[:id])
+    if !service.nil?
+      service.destroy
+      render json: { message: 'Service was removed' }
     else
-      render json: { error: 'Client not found' }, status: 422
+      render json: { error: 'Service not found' }, status: 422
     end
   end
 
   private
 
   def params
-    params.require(:client).permit(:name, :alias, :codetype_id)
+    params.require(:service).permit(:name, :alias, :codetype_id)
   end
 end

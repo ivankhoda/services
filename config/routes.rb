@@ -25,11 +25,11 @@ Rails.application.routes.draw do
   get '/service/:id', to: 'services#show'
   patch '/service/:id', to: 'services#update'
   delete '/service/:id', to: 'services#destroy'
-  get '/service', to: 'services#index'
+  get '/services', to: 'services#index'
 
   post '/order', to: 'orders#create'
   get '/order/:id', to: 'orders#show'
   patch '/order/:id', to: 'orders#update'
   delete '/order/:id', to: 'orders#destroy'
-  get '/order', to: 'orders#index'
+  get '/orders', to: 'orders#index'
 end

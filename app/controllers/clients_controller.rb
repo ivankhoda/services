@@ -16,7 +16,7 @@ class ClientsController < ApplicationController
   end
 
   def create
-    @client = Client.new(vendor_params)
+    @client = Client.new(params)
     if @client.save
       render json: { message: 'Client succesfully created' }
     else
@@ -27,7 +27,7 @@ class ClientsController < ApplicationController
   def update
     client = Client.find_by(id: params[:id])
     if !client.nil?
-      client.update(vendor_params)
+      client.update(params)
       render json: { client: }
     else
       render json: { error: 'Client not found' }, status: 422
@@ -37,7 +37,7 @@ class ClientsController < ApplicationController
   def destroy
     client = Client.find_by(id: params[:id])
     if !client.nil?
-      client.task_ranges.destroy
+
       client.destroy
       render json: { message: 'Client was removed' }
     else

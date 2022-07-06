@@ -8,7 +8,6 @@ class CategoriesController < ApplicationController
   def index
     categories = Category.find_each
     render json: { categories: }
-    # AssigneeSerializer.new(categories).serializable_hash
   end
 
   def show
@@ -17,7 +16,7 @@ class CategoriesController < ApplicationController
   end
 
   def create
-    @category = Category.new(vendor_params)
+    @category = Category.new(params)
     if @category.save
       render json: { message: 'Category succesfully created' }
     else
@@ -28,7 +27,7 @@ class CategoriesController < ApplicationController
   def update
     category = Category.find_by(id: params[:id])
     if !category.nil?
-      category.update(vendor_params)
+      category.update(params)
       render json: { category: }
     else
       render json: { error: 'Category not found' }, status: 422
@@ -38,7 +37,6 @@ class CategoriesController < ApplicationController
   def destroy
     category = Category.find_by(id: params[:id])
     if !category.nil?
-      category.task_ranges.destroy
       category.destroy
       render json: { message: 'Category was removed' }
     else

@@ -17,7 +17,7 @@ class AssigneesController < ApplicationController
   end
 
   def create
-    @assignee = Assignee.new(vendor_params)
+    @assignee = Assignee.new(params)
     if @assignee.save
       render json: { message: 'Assignee succesfully created' }
     else
@@ -28,7 +28,7 @@ class AssigneesController < ApplicationController
   def update
     assignee = Assignee.find_by(id: params[:id])
     if !assignee.nil?
-      assignee.update(vendor_params)
+      assignee.update(params)
       render json: { assignee: }
     else
       render json: { error: 'Assignee not found' }, status: 422
@@ -38,7 +38,7 @@ class AssigneesController < ApplicationController
   def destroy
     assignee = Assignee.find_by(id: params[:id])
     if !assignee.nil?
-      assignee.task_ranges.destroy
+
       assignee.destroy
       render json: { message: 'Assignee was removed' }
     else
