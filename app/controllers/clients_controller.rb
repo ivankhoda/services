@@ -18,7 +18,7 @@ class ClientsController < ApplicationController
   def create
     @client = Client.new(client_params)
     if @client.save
-      render json: { message: 'Client succesfully created' }
+      render json: { message: @client }
     else
       render json: { error: @client.errors.messages }
     end

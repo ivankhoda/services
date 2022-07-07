@@ -17,9 +17,9 @@ class AssigneesController < ApplicationController
   end
 
   def create
-    @assignee = Assignee.new(params)
+    @assignee = Assignee.new(assignee_params)
     if @assignee.save
-      render json: { message: 'Assignee succesfully created' }
+      render json: { message: @assignee }
     else
       render json: { error: @assignee.errors.messages }
     end
@@ -28,7 +28,7 @@ class AssigneesController < ApplicationController
   def update
     assignee = Assignee.find_by(id: params[:id])
     if !assignee.nil?
-      assignee.update(params)
+      assignee.update(assignee_params)
       render json: { assignee: }
     else
       render json: { error: 'Assignee not found' }, status: 422
@@ -48,7 +48,7 @@ class AssigneesController < ApplicationController
 
   private
 
-  def params
+  def assignee_params
     params.require(:assignee).permit(:name, :surname)
   end
 end
