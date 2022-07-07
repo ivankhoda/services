@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_07_05_181250) do
+ActiveRecord::Schema[7.0].define(version: 2022_07_07_205403) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -35,21 +35,23 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_05_181250) do
   end
 
   create_table "orders", force: :cascade do |t|
-    t.text "client"
-    t.text "services"
-    t.text "assignee"
+    t.text "client_name"
+    t.text "positions"
+    t.text "assignee_name"
     t.integer "price"
     t.bigint "client_id", null: false
     t.bigint "assignee_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "service_id", null: false
     t.index ["assignee_id"], name: "index_orders_on_assignee_id"
     t.index ["client_id"], name: "index_orders_on_client_id"
+    t.index ["service_id"], name: "index_orders_on_service_id"
   end
 
   create_table "services", force: :cascade do |t|
     t.text "title"
-    t.text "category"
+    t.text "category_title"
     t.bigint "category_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -58,5 +60,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_05_181250) do
 
   add_foreign_key "orders", "assignees"
   add_foreign_key "orders", "clients"
+  add_foreign_key "orders", "services"
   add_foreign_key "services", "categories"
 end

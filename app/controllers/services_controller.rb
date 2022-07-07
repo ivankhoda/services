@@ -16,9 +16,11 @@ class ServicesController < ApplicationController
   end
 
   def create
-    @service = Service.new(params)
-    if @service.save
-      render json: { message: 'Service succesfully created' }
+    category = Category.find_by(title: service_params[:service_category])
+    service = Service.new(title: service_params[:title], category_title: category.title, category_id: category.id)
+
+    if service.save
+      render json: { service: }
     else
       render json: { error: @service.errors.messages }
     end
@@ -26,8 +28,9 @@ class ServicesController < ApplicationController
 
   def update
     service = Service.find_by(id: params[:id])
+    category = Category.find_by(title: service_params[:service_category])
     if !service.nil?
-      service.update(params)
+      service.update(title: service_params[:title], category_title: category.title, category_id: category.id)
       render json: { service: }
     else
       render json: { error: 'Service not found' }, status: 422
@@ -46,7 +49,7 @@ class ServicesController < ApplicationController
 
   private
 
-  def params
-    params.require(:service).permit(:name, :alias, :codetype_id)
+  def service_params
+    params.require(:service).permit(:title, :service_category, :category_id)
   end
 end

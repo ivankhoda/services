@@ -16,9 +16,10 @@ class OrdersController < ApplicationController
   end
 
   def create
-    @order = Order.new(params)
+    @order = Order.new(order_params)
+    p order_params, 'params'
     if @order.save
-      render json: { message: 'Order succesfully created' }
+      render json: OrderSerializer.new(@order)
     else
       render json: { error: @order.errors.messages }
     end
@@ -47,7 +48,8 @@ class OrdersController < ApplicationController
 
   private
 
-  def params
-    params.require(:order).permit(:name, :alias, :codetype_id)
+  def order_params
+    params.require(:order).permit(:client_name, :assignee_name, :price, :client_id, :assignee_id,
+                                  positions: [])
   end
 end
