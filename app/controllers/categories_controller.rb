@@ -11,23 +11,23 @@ class CategoriesController < ApplicationController
   end
 
   def show
-    category = Category.find_by(id: params[:id])
+    category = Category.find_by(id: category_params[:id])
     render json: { category: }
   end
 
   def create
-    @category = Category.new(params)
+    @category = Category.new(category_params)
     if @category.save
-      render json: { message: 'Category succesfully created' }
+      render json: { message: @category }
     else
       render json: { error: @category.errors.messages }
     end
   end
 
   def update
-    category = Category.find_by(id: params[:id])
+    category = Category.find_by(id: category_params[:id])
     if !category.nil?
-      category.update(params)
+      category.update(category_params)
       render json: { category: }
     else
       render json: { error: 'Category not found' }, status: 422
@@ -46,7 +46,7 @@ class CategoriesController < ApplicationController
 
   private
 
-  def params
+  def category_params
     params.require(:category).permit(:title)
   end
 end
