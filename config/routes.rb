@@ -27,6 +27,12 @@ Rails.application.routes.draw do
   delete '/service/:id', to: 'services#destroy'
   get '/services', to: 'services#index'
 
+  post '/generic-service', to: 'generic_service#create'
+  get '/generic-service/:id', to: 'generic_service#show'
+  patch '/generic-service/:id', to: 'generic_services#update'
+  delete '/generic-service/:id', to: 'generic_services#destroy'
+  get '/generic-services', to: 'generic_services#index'
+
   post '/order', to: 'orders#create'
   get '/order/:id', to: 'orders#show'
   patch '/order/:id', to: 'orders#update'

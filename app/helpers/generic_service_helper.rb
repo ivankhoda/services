@@ -1,0 +1,2 @@
+module GenericServiceHelper
+end

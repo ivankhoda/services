@@ -25,27 +25,28 @@ Faker::Config.locale = 'en'
 #   )
 # end
 
+# 20.times do |_id|
+#   client = Client.all.sample
+#   service = Service.all.sample
+#   service2 = Service.all.sample
+#   assignee = Assignee.all.sample
+#   price = rand(1000)
+#   Order.create!(
+#     client_name: client.name + " #{client.surname}",
+#     # positions: [service.title, service2.title],
+#     assignee_name: assignee.name + " #{assignee.surname}",
+#     price:,
+#     client_id: client.id,
+#     assignee_id: assignee.id
+#   )
+# end
+
 10.times do |_id|
-  category  = Category.all.sample
-  Service.create!(
+  category = Category.all.sample
+  GenericService.create!(
     title: Faker::Commerce.product_name,
     category_title: category.title,
     category_id: category.id
-  )
-end
-10.times do |_id|
-  client = Client.all.sample
-  service = Service.all.sample
-  service2 = Service.all.sample
-  assignee = Assignee.all.sample
-  price = rand(1000)
-  Order.create!(
-    client_name: client.name + " #{client.surname}",
-    positions: [service.title, service2.title],
-    assignee_name: assignee.name + " #{assignee.surname}",
-    price:,
-    client_id: client.id,
-    assignee_id: assignee.id
   )
 end
 
