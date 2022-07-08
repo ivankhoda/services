@@ -16,13 +16,29 @@ class OrdersController < ApplicationController
   end
 
   def create
-    @order = Order.new(order_params)
-    p order_params, 'params'
-    if @order.save
-      render json: OrderSerializer.new(@order)
-    else
-      render json: { error: @order.errors.messages }
-    end
+    @order = Order.new({ client_name: order_params[:client_name], assignee_name: order_params[:assignee_name],
+                         price: order_params[:price], client_id: order_params[:client_id], assignee_id: order_params[:assignee_id] })
+    # @order = Order.new(order_params)
+
+    @positions = Service.where(id: order_params[:service_id])
+    # @order.positions = order_params[:positions]
+    p @positions
+    positions_ids = @positions.map { |pos| pos.id }
+    pos_title = @positions.map { |pos| pos.title }
+    p pos_title, pos_title.class
+    p positions_ids, positions_ids.class
+    @order.positions
+    p @order.positions, @order.positions.class
+
+    # @order.service_id = positions_ids
+    # p @order
+    # @order.positions << order_positions
+    # @order.positions_id << order_positions_ids
+    # if @order.save
+    #   render json: OrderSerializer.new(@order)
+    # else
+    #   render json: { error: @order.errors.messages }
+    # end
   end
 
   def update
@@ -49,7 +65,7 @@ class OrdersController < ApplicationController
   private
 
   def order_params
-    params.require(:order).permit(:client_name, :assignee_name, :price, :client_id, :assignee_id,
-                                  positions: [])
+    params.require(:order).permit(:client_name, :assignee_name, :price, :client_id, :assignee_id, service_id: [],
+                                                                                                  positions: [])
   end
 end
