@@ -33,7 +33,7 @@ class OrdersController < ApplicationController
   def update
     order = Order.find_by(id: params[:id])
     if !order.nil?
-      order.update(params)
+      order.update(order_params)
       render json: OrderSerializer.new(order).serializable_hash
     else
       render json: { error: 'Order not found' }, status: 422
