@@ -33,6 +33,8 @@ gem "redis", "~> 4.0"
 gem 'jsonapi-serializer'
 gem 'faker'
 gem 'rack-cors'
+gem 'caxlsx'
+gem 'caxlsx_rails'
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
 

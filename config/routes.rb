@@ -38,4 +38,5 @@ Rails.application.routes.draw do
   patch '/order/:id', to: 'orders#update'
   delete '/order/:id', to: 'orders#destroy'
   get '/orders', to: 'orders#index'
+  get '/orders/export', to: 'orders#export'
 end

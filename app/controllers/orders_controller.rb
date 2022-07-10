@@ -6,7 +6,10 @@ class OrdersController < ApplicationController
   end
 
   def index
-    orders = Order.find_each
+    query = Query::OrderSorter.new(params['search_term'])
+
+    orders = Order.where(query.request)
+
     render json: OrderSerializer.new(orders)
   end
 
@@ -22,7 +25,6 @@ class OrdersController < ApplicationController
       order_params[:positions].each do |pos|
         position = Service.create!({ title: pos[:title], category_id: pos[:category_id], order_id: @order.id })
         @order.positions << position[:title]
-        p @order
       end
       render json: OrderSerializer.new(@order)
     else
@@ -51,10 +53,38 @@ class OrdersController < ApplicationController
     end
   end
 
+  def export
+    require 'axlsx'
+    query = Query::OrderSorter.new(params['search_term'])
+
+    @orders = Order.where(query.request)
+
+    respond_to do |format|
+      format.xlsx
+
+      format.html
+    end
+
+    # p = Axlsx::Package.new
+    # p.workbook do |wb|
+    #   wb.add_worksheet(name: 'Orders') do |sheet|
+    #     sheet.add_row %w[Id Date Client Assignee Positions Amount]
+    #     @orders.each do |order|
+    #       sheet.add_row [order.id, order.created_at, order.client_name, order.assignee_name, @positions,
+    #                      order.price]
+    #     end
+    #   end
+    # end
+    # p.serialize 'data.xlsx'
+
+    # format.xlsx{ filename =>'data.xlsx' }
+    render xlsx: 'data', filename: 'data.xlsx'
+  end
+
   private
 
   def order_params
-    params.require(:order).permit(:client_name, :assignee_name, :price, :client_id, :assignee_id,
-                                  positions: %i[title category_id position_id])
+    params.require(:order).permit(:id, :client_name, :assignee_name, :price, :client_id, :assignee_id,
+                                  positions: %i[title category_id category_title position_id order_id id created_at updated_at])
   end
 end
