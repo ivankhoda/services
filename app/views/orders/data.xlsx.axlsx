@@ -1,11 +1,8 @@
-p = Axlsx::Package.new
-    p.workbook do |wb|
-      wb.add_worksheet(name: 'Orders') do |sheet|
-        sheet.add_row %w[Id Date Client Assignee Positions Amount]
-        @orders.each do |order|
-          sheet.add_row [order.id, order.created_at, order.client_name, order.assignee_name, @positions,
+wb = xlsx_package.workbook
+wb.add_worksheet(name: "Orders") do |sheet|
+  @orders.each do |order|
+    sheet.add_row [order.id, order.created_at, order.client_name, order.assignee_name, order.positions,
                          order.price]
-        end
-      end
-    end
-   
+
+  end
+end

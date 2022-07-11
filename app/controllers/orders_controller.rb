@@ -61,24 +61,27 @@ class OrdersController < ApplicationController
 
     respond_to do |format|
       format.xlsx
-
-      format.html
+      format.xlsx do
+        response.headers['Content-Disposition'] = 'attachment; filename="data.xlsx"'
+      end
     end
 
-    # p = Axlsx::Package.new
-    # p.workbook do |wb|
-    #   wb.add_worksheet(name: 'Orders') do |sheet|
-    #     sheet.add_row %w[Id Date Client Assignee Positions Amount]
-    #     @orders.each do |order|
-    #       sheet.add_row [order.id, order.created_at, order.client_name, order.assignee_name, @positions,
-    #                      order.price]
-    #     end
-    #   end
-    # end
-    # p.serialize 'data.xlsx'
+    p = Axlsx::Package.new
+    p.workbook do |wb|
+      wb.add_worksheet(name: 'Orders') do |sheet|
+        sheet.add_row %w[Id Date Client Assignee Positions Amount]
+        @orders.each do |order|
+          sheet.add_row [order.id, order.created_at, order.client_name, order.assignee_name, @positions,
+                         order.price]
+        end
+      end
+    end
+    p.serialize("#{Rails.root}/tmp/data.xlsx")
 
     # format.xlsx{ filename =>'data.xlsx' }
-    render xlsx: 'data', filename: 'data.xlsx'
+    # render xlsx: 'data', filename: 'data.xlsx'
+    send_file "#{Rails.root}/tmp/data.xlsx", filename: 'data.xlsx', type: 'application/vnd.ms-excel',
+                                             disposition: 'attachment'
   end
 
   private
