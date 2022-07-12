@@ -52,6 +52,6 @@ class GenericServicesController < ApplicationController
   private
 
   def generic_service_params
-    params.require(:generic_service).permit(:title, :service_category, :category_id)
+    params.require(:generic_service).permit(:title, :service_category)
   end
 end
