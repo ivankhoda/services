@@ -111,7 +111,7 @@ class OrdersController < ApplicationController
   private
 
   def order_params
-    params.require(:order).permit(:id, :client_name, :assignee_name, :price, :client_id, :assignee_id,
+    params.require(:order).permit(:client_name, :assignee_name, :price, :client_id, :assignee_id,
                                   positions: %i[title category_id category_title])
   end
 end
