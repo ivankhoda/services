@@ -7,8 +7,7 @@ class AssigneesController < ApplicationController
 
   def index
     assignees = Assignee.find_each
-    render json: { assignees: }
-    # AssigneeSerializer.new(assignees).serializable_hash
+    render json: { assignees: } if assignees
   end
 
   def show

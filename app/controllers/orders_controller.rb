@@ -18,12 +18,12 @@ class OrdersController < ApplicationController
     else
       orders = Order.where(query.request)
     end
-    render json: OrderSerializer.new(orders)
+    render json: OrderSerializer.new(orders) if orders
   end
 
   def show
     order = Order.find_by(id: params[:id])
-    render json: OrderSerializer.new(order).serializable_hash
+    render json: OrderSerializer.new(order).serializable_hash if order
   end
 
   def create

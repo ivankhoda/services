@@ -7,7 +7,7 @@ class ClientsController < ApplicationController
 
   def index
     clients = Client.find_each
-    render json: { clients: }
+    render json: { clients: } if clients
   end
 
   def show

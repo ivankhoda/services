@@ -7,12 +7,12 @@ class GenericServicesController < ApplicationController
 
   def index
     generic_services = GenericService.find_each
-    render json: { generic_services: }
+    render json: { generic_services: } if generic_services
   end
 
   def show
     generic_service = GenericService.find_by(id: params[:id])
-    render json: { generic_service: }
+    render json: { generic_service: } if generic_service
   end
 
   def create

@@ -7,7 +7,7 @@ class CategoriesController < ApplicationController
 
   def index
     categories = Category.find_each
-    render json: { categories: }
+    render json: { categories: } if categories
   end
 
   def show
