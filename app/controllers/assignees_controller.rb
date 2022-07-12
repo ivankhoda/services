@@ -12,7 +12,7 @@ class AssigneesController < ApplicationController
   end
 
   def show
-    assignee = Assignee.find_by(id: assignee_params[:id])
+    assignee = Assignee.find_by(id: params[:id])
     render json: { assignee: }
   end
 
@@ -26,7 +26,7 @@ class AssigneesController < ApplicationController
   end
 
   def update
-    assignee = Assignee.find_by(id: assignee_params[:id])
+    assignee = Assignee.find_by(id: params[:id])
     if !assignee.nil?
       assignee.update(assignee_params)
       render json: { assignee: }
@@ -36,7 +36,7 @@ class AssigneesController < ApplicationController
   end
 
   def destroy
-    assignee = Assignee.find_by(id: assignee_params[:id])
+    assignee = Assignee.find_by(id: params[:id])
     if !assignee.nil?
 
       assignee.destroy

@@ -11,7 +11,7 @@ class CategoriesController < ApplicationController
   end
 
   def show
-    category = Category.find_by(id: category_params[:id])
+    category = Category.find_by(id: params[:id])
     render json: { category: }
   end
 
@@ -25,7 +25,7 @@ class CategoriesController < ApplicationController
   end
 
   def update
-    category = Category.find_by(id: category_params[:id])
+    category = Category.find_by(id: params[:id])
     if !category.nil?
       category.update(category_params)
       render json: { category: }
@@ -35,7 +35,7 @@ class CategoriesController < ApplicationController
   end
 
   def destroy
-    category = Category.find_by(id: category_params[:id])
+    category = Category.find_by(id: params[:id])
     if !category.nil?
       category.destroy
       render json: { message: 'Category was removed' }

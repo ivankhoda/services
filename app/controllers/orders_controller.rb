@@ -7,9 +7,17 @@ class OrdersController < ApplicationController
 
   def index
     query = Query::OrderSorter.new(params['search_term'])
-
-    orders = Order.where(query.request)
-
+    orders = []
+    if query.request.has_key?('category_id')
+      services = Service.where(query.request)
+      order_ids = []
+      services.each do |service|
+        order_ids << service.order_id
+      end
+      orders = Order.where(id: order_ids)
+    else
+      orders = Order.where(query.request)
+    end
     render json: OrderSerializer.new(orders)
   end
 
@@ -20,15 +28,15 @@ class OrdersController < ApplicationController
 
   def create
     par = order_params.except(:positions)
-    @order = Order.new(par)
-    if @order.save
+    order = Order.new(par)
+    if order.save
       order_params[:positions].each do |pos|
-        position = Service.create!({ title: pos[:title], category_id: pos[:category_id], order_id: @order.id })
-        @order.positions << position[:title]
+        position = Service.create!({ title: pos[:title], category_id: pos[:category_id], order_id: order.id })
+        order.positions << position[:title]
       end
-      render json: OrderSerializer.new(@order)
+      render json: OrderSerializer.new(order)
     else
-      render json: { error: @order.errors.messages }
+      render json: { error: order.errors.messages }
     end
   end
 
@@ -57,7 +65,17 @@ class OrdersController < ApplicationController
     require 'axlsx'
     query = Query::OrderSorter.new(params['search_term'])
 
-    @orders = Order.where(query.request)
+    @orders = []
+    if query.request.has_key?('category_id')
+      services = Service.where(query.request)
+      order_ids = []
+      services.each do |service|
+        order_ids << service.order_id
+      end
+      @orders = Order.where(id: order_ids)
+    else
+      @orders = Order.where(query.request)
+    end
 
     respond_to do |format|
       format.xlsx
@@ -71,15 +89,21 @@ class OrdersController < ApplicationController
       wb.add_worksheet(name: 'Orders') do |sheet|
         sheet.add_row %w[Id Date Client Assignee Positions Amount]
         @orders.each do |order|
-          sheet.add_row [order.id, order.created_at, order.client_name, order.assignee_name, @positions,
+          order_positions = ''
+
+          if order.services
+            order.services.each do |pos|
+              order_positions << "#{pos[:title]}\n"
+            end
+          end
+
+          sheet.add_row [order.id, order.created_at, order.client_name, order.assignee_name, order_positions,
                          order.price]
         end
       end
     end
     p.serialize("#{Rails.root}/tmp/data.xlsx")
 
-    # format.xlsx{ filename =>'data.xlsx' }
-    # render xlsx: 'data', filename: 'data.xlsx'
     send_file "#{Rails.root}/tmp/data.xlsx", filename: 'data.xlsx', type: 'application/vnd.ms-excel',
                                              disposition: 'attachment'
   end
@@ -88,6 +112,6 @@ class OrdersController < ApplicationController
 
   def order_params
     params.require(:order).permit(:id, :client_name, :assignee_name, :price, :client_id, :assignee_id,
-                                  positions: %i[title category_id category_title position_id order_id id created_at updated_at])
+                                  positions: %i[title category_id category_title])
   end
 end
